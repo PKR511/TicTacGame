@@ -10,20 +10,20 @@ public class GameScript : MonoBehaviour
     public bool isPlaying =true;
     public rowWiseToken[] tokens;
     public TextAsset jsonTextFile;
-    private JasonClass jasonClass;
+    private GameData gameData;
 
 
     public void Awake()
     {
         isPlaying = true;
-        jasonClass = JsonUtility.FromJson<JasonClass>(jsonTextFile.text);
-        string jasonObject = JsonUtility.ToJson(jasonClass);
-        Debug.Log(jasonObject);
+        gameData = JsonUtility.FromJson<GameData>(jsonTextFile.text);
+        string jsonObject = JsonUtility.ToJson(gameData);
+        Debug.Log(jsonObject);
     }
 
     public void Start()
     {
-        jasonClass.totalGamePlayed++;
+        gameData.totalGamePlayed++;
     }
 
     public int PlayerTurn()
@@ -39,22 +39,22 @@ public class GameScript : MonoBehaviour
         {
            if(index == 0)
             {
-                uiManager.ShowGameWinMsg(jasonClass, "Red");
-                jasonClass.redWin++;
+                uiManager.ShowGameWinMsg(gameData, "Red");
+                gameData.redWin++;
             }
             else
             {
-               uiManager. ShowGameWinMsg(jasonClass,"Blue");
-                jasonClass.blueWin++;
+               uiManager. ShowGameWinMsg(gameData,"Blue");
+                gameData.blueWin++;
             }
             isPlaying = false;
-            UpdateJasonFile();
+            UpdateJsonFile();
         }
         else
         {
             if(spriteIndex >= 9)
             {
-                uiManager.ShowDrawMsg(jasonClass);
+                uiManager.ShowDrawMsg(gameData);
             }
             isPlaying = true;
         }
@@ -62,40 +62,33 @@ public class GameScript : MonoBehaviour
 
     public bool CheckWin(int index)
     {
-        int count = 0;
-       //performing row check
-        for(int row = 0; row < tokens.Length; row++)
+        if (CheckWinForRowBased(index) 
+            || CheckWinForColBased(index) 
+            || CheckWinForRightDiagonal(index) 
+            || CHeckWinForLeftDiagonal(index))
         {
-            for(int col = 0; col < tokens[0].rowtoken.Length; col++)
-            {
-                if (tokens[row].rowtoken[col].unplayed == false)
-                {
-                    if (tokens[row].rowtoken[col].spriteIndex == index)
-                        count++;
-                }
-            }
-            if(count == tokens.Length)
-            {
-                Debug.Log("Win"+index);
-                return true;
-            }
-            else
-            {
-                count = 0;
-            }
+            return true;
         }
+        else
+        {
+            return false;
+        }
+      
+    }//CheckWin
 
-        //performing Col check
-        for (int col = 0; col < tokens[0].rowtoken.Length; col++)
+    public bool CheckWinForRowBased(int index)
+    {
+        int count = 0;
+        for (int row = 0; row < tokens.Length; row++)
         {
-                for (int row = 0; row < tokens.Length; row++)
-                {
+            for (int col = 0; col < tokens[0].rowtoken.Length; col++)
+            {
                 if (tokens[row].rowtoken[col].unplayed == false)
                 {
                     if (tokens[row].rowtoken[col].spriteIndex == index)
                         count++;
                 }
-        }
+            }
             if (count == tokens.Length)
             {
                 Debug.Log("Win" + index);
@@ -106,40 +99,48 @@ public class GameScript : MonoBehaviour
                 count = 0;
             }
         }
-        //performing right Diagonal check
+        return false;
+    }
+
+    public bool CheckWinForColBased(int index)
+    {
+        int count = 0;
         for (int col = 0; col < tokens[0].rowtoken.Length; col++)
         {
             for (int row = 0; row < tokens.Length; row++)
             {
-                if (tokens[row].rowtoken[col].unplayed == false && col==row)
+                if (tokens[row].rowtoken[col].unplayed == false)
                 {
                     if (tokens[row].rowtoken[col].spriteIndex == index)
                         count++;
                 }
             }
-           
+            if (count == tokens.Length)
+            {
+                Debug.Log("Win" + index);
+                return true;
+            }
+            else
+            {
+                count = 0;
+            }
         }
-        if (count == tokens.Length)
-        {
-            Debug.Log("Win" + index);
-            return true;
-        }
-        else
-        {
-            count = 0;
-        }
-        //performing right Diagonal check
+        return false;
+    }
+    public bool CheckWinForRightDiagonal(int index)
+    {
+        int count = 0;
         for (int col = 0; col < tokens[0].rowtoken.Length; col++)
         {
             for (int row = 0; row < tokens.Length; row++)
             {
-                if (tokens[row].rowtoken[col].unplayed == false && (col + row) == tokens.Length-1)
+                if (tokens[row].rowtoken[col].unplayed == false && col == row)
                 {
                     if (tokens[row].rowtoken[col].spriteIndex == index)
                         count++;
                 }
             }
-           
+
         }
         if (count == tokens.Length)
         {
@@ -151,12 +152,37 @@ public class GameScript : MonoBehaviour
             count = 0;
         }
         return false;
-    }//CheckWin
-
-    public void UpdateJasonFile()
+    }
+    public bool CHeckWinForLeftDiagonal(int index)
     {
-       string jasonObject= JsonUtility.ToJson(jasonClass);
-        System.IO.File.WriteAllText(Application.dataPath + "/Save.json", jasonObject);
+        int count = 0;
+        for (int col = 0; col < tokens[0].rowtoken.Length; col++)
+        {
+            for (int row = 0; row < tokens.Length; row++)
+            {
+                if (tokens[row].rowtoken[col].unplayed == false && (col + row) == tokens.Length - 1)
+                {
+                    if (tokens[row].rowtoken[col].spriteIndex == index)
+                        count++;
+                }
+            }
+
+        }
+        if (count == tokens.Length)
+        {
+            Debug.Log("Win" + index);
+            return true;
+        }
+        else
+        {
+            count = 0;
+        }
+        return false;
+    }
+    public void UpdateJsonFile()
+    {
+       string jsonObject= JsonUtility.ToJson(gameData);
+        System.IO.File.WriteAllText(Application.dataPath + "/Save.json", jsonObject);
     }
   
 }//Class

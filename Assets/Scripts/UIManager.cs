@@ -20,24 +20,24 @@ public class UIManager : MonoBehaviour
     }
 
 
-    public void ShowGameWinMsg(JasonClass jasson ,string text)
+    public void ShowGameWinMsg(GameData json ,string text)
     {
         DrawObject.SetActive(false);
         WinObject.SetActive(true);
         winText.text = "Player " + text + " Wins";
-        winScore.text = GetScore(jasson);
+        winScore.text = GetScore(json);
     }
 
-    public void ShowDrawMsg(JasonClass jasson)
+    public void ShowDrawMsg(GameData json)
     {
         WinObject.SetActive(false);
         DrawObject.SetActive(true);
-        drawScore.text = GetScore(jasson);
+        drawScore.text = GetScore(json);
     }
 
-    public string GetScore(JasonClass jasson)
+    public string GetScore(GameData json)
     {
-        string score = "Tatal Game Played :"+jasson.totalGamePlayed+"\n Red Win: "+jasson.redWin + " Blue Win: " + jasson.blueWin;
+        string score = "Tatal Game Played :"+ json.totalGamePlayed+"\n Red Win: "+ json.redWin + " Blue Win: " + json.blueWin;
         return score;
     }
 }

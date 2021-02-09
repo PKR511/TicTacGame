@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class JasonClass 
+public class GameData 
 {
     public int totalGamePlayed;
     public int redWin;

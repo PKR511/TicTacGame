@@ -34,7 +34,7 @@ public class TurnScript : MonoBehaviour
             spriteRenderer.sprite = images[index];
             spriteIndex = index;
             unplayed = false;
-           gameBoard.GetComponent<GameScript>().CheckGameStatus(index);
+            gameBoard.GetComponent<GameScript>().CheckGameStatus(index);
            
         }
     }
