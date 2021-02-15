@@ -18,7 +18,7 @@ public class GameScript : MonoBehaviour
         isPlaying = true;
         gameData = JsonUtility.FromJson<GameData>(jsonTextFile.text);
         string jsonObject = JsonUtility.ToJson(gameData);
-        Debug.Log(jsonObject);
+       //Debug.Log(jsonObject);
     }
 
     public void Start()

@@ -21,7 +21,7 @@ public class GameTheamManager : MonoBehaviour
             foreach (var pair in dictionaryScript.MyDictionary)
             {
                 theamKey = pair.Key;
-                Debug.Log("Theam Changed-> Key: " + pair.Key + " Value: " + pair.Value.backGroundColor);
+               // Debug.Log("Theam Changed-> Key: " + pair.Key + " Value: " + pair.Value.backGroundColor);
                 ChangeCurrentTheam(dictionaryScript.MyDictionary[pair.Key]);
                 break;
             }
@@ -46,7 +46,7 @@ public class GameTheamManager : MonoBehaviour
                 if(pair.Key != theamKey)
                 {
                     theamKey = pair.Key;
-                    Debug.Log("Theam Changed-> Key: " + pair.Key + " Value: " + pair.Value.backGroundColor);
+                    //Debug.Log("Theam Changed-> Key: " + pair.Key + " Value: " + pair.Value.backGroundColor);
                     ChangeCurrentTheam(dictionaryScript.MyDictionary[pair.Key]);
                     break;
                 }
