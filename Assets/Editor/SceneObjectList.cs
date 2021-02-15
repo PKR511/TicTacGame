@@ -29,12 +29,7 @@ public class SceneObjectList : MonoBehaviour
 
     private void Update()
     {
-        if (getref == true)
-        {
-            allComponents = GetAllActiveInScene();
-           
-            getref = false;
-        }
+       
     }
 
 
@@ -129,60 +124,35 @@ public class SceneObjectList : MonoBehaviour
         }
 
     }
-
-    public string MenuShowIds(GameObject tempObject)
-    {
-        var stringBuilder = new StringBuilder();
-        int count = 0;
-        string result = null;
-        foreach (var obj in AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(tempObject)))
-        {
-            string guid;
-            long file;
-            count++;
-            Debug.Log(obj + "/" + count);
-            if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(obj, out guid, out file))
-            {
-                stringBuilder.AppendFormat("Asset: " + obj.name +
-                    "\n  Instance ID: " + obj.GetInstanceID() +
-                    "\n  GUID: " + guid +
-                    "\n  File ID: " + file);
+  
+    //public string MenuShowIds(GameObject tempObject)
+    //{
+    //    var stringBuilder = new StringBuilder();
+    //    int count = 0;
+    //    string result = null;
+    //    foreach (var obj in AssetDatabase.LoadAllAssetsAtPath(AssetDatabase.GetAssetPath(tempObject)))
+    //    {
+    //        string guid;
+    //        long file;
+    //        count++;
+    //        Debug.Log(obj + "/" + count);
+    //        if (AssetDatabase.TryGetGUIDAndLocalFileIdentifier(obj, out guid, out file))
+    //        {
+    //            stringBuilder.AppendFormat("Asset: " + obj.name +
+    //                "\n  Instance ID: " + obj.GetInstanceID() +
+    //                "\n  GUID: " + guid +
+    //                "\n  File ID: " + file);
                
-                result = guid;
-                break;
-            }
-        }
+    //            result = guid;
+    //            break;
+    //        }
+    //    }
 
-        Debug.Log(stringBuilder.ToString() + "/" + count);
-        return result;
-    }
+    //    Debug.Log(stringBuilder.ToString() + "/" + count);
+    //    return result;
+    //}
 
-    private  Component[] GetAllActiveInScene()
-    {
-        // Use new version of Resources.FindObjectsOfTypeAll(typeof(Component)) as per https://forum.unity.com/threads/editorscript-how-to-get-all-gameobjects-in-scene.224524/
-        var rootObjects = UnityEngine.SceneManagement.SceneManager
-            .GetActiveScene()
-            .GetRootGameObjects();
-        List<Component> result = new List<Component>();
-        foreach (var rootObject in rootObjects)
-        {
-            result.AddRange(rootObject.GetComponentsInChildren<Component>());
-        }
-        return result.ToArray();
-    }
-    private  void componentReferences(Component component, Component references)
-    {
-        SerializedObject serObj = new SerializedObject(component);
-        SerializedProperty prop = serObj.GetIterator();
-        while (prop.NextVisible(true))
-        {
-            bool isObjectField = prop.propertyType == SerializedPropertyType.ObjectReference && prop.objectReferenceValue != null;
-            if (isObjectField && prop.objectReferenceValue == references)
-            {
-                ReferencingSelection.Add(component);
-            }
-        }
-    }
+   
 }//class
 
 

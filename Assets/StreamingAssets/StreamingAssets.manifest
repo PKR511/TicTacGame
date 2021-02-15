@@ -1,0 +1,10 @@
+ManifestFileVersion: 0
+CRC: 3540699982
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: gameplayscene
+      Dependencies: {}
+    Info_1:
+      Name: image
+      Dependencies: {}
